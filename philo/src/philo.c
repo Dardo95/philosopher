@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:14:59 by enogueir          #+#    #+#             */
-/*   Updated: 2025/04/25 17:51:44 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/04 20:09:48 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,34 @@
 // 		return (error("Invalid Arguments");
 // }
 
+#include "../include/philo.h"
+#include <stdio.h>
 #include <stdio.h>
 
 int	main(int argc, char **argv)
 {
 	t_config	config;
+	int			i;
 
 	if (!parse_args(argc, argv, &config))
+		return (printf("❌ Argumentos inválidos\n"), 1);
+	if (!init_config(&config))
+		return (printf("❌ Error al inicializar forks y philos\n"), 1);
+	if (!init_philosophers(&config))
+		return (printf("❌ Error al inicializar filósofos\n"), 1);
+
+	printf("✅ Filósofos inicializados correctamente:\n\n");
+	i = 0;
+	while (i < config.n_philos)
 	{
-		printf("❌ Error: argumentos inválidos\n");
-		return (1);
+		t_philo *p = &config.philos[i];
+		printf("Filósofo %d:\n", p->id);
+		printf("  Meals: %d\n", p->meals);
+		printf("  Left fork:  %p\n", (void *)p->left_fork);
+		printf("  Right fork: %p\n", (void *)p->right_fork);
+		printf("  Config ptr: %p\n", (void *)p->config);
+		printf("\n");
+		i++;
 	}
-	printf("✅ Argumentos parseados correctamente:\n");
-	printf("Número de filósofos:         %d\n", config.n_philos);
-	printf("Tiempo para morir (ms):      %d\n", config.time_die);
-	printf("Tiempo para comer (ms):      %d\n", config.time_eat);
-	printf("Tiempo para dormir (ms):     %d\n", config.time_sleep);
-	printf("Veces que debe comer cada uno: ");
-	if (config.must_eat == -1)
-		printf("no especificado\n");
-	else
-		printf("%d\n", config.must_eat);
 	return (0);
 }
