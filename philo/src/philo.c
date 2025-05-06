@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:14:59 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/04 20:09:48 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:55:47 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,27 +27,16 @@
 int	main(int argc, char **argv)
 {
 	t_config	config;
-	int			i;
 
 	if (!parse_args(argc, argv, &config))
 		return (printf("❌ Argumentos inválidos\n"), 1);
 	if (!init_config(&config))
-		return (printf("❌ Error al inicializar forks y philos\n"), 1);
+		return (printf("❌ Error al inicializar config\n"), 1);
 	if (!init_philosophers(&config))
 		return (printf("❌ Error al inicializar filósofos\n"), 1);
-
-	printf("✅ Filósofos inicializados correctamente:\n\n");
-	i = 0;
-	while (i < config.n_philos)
-	{
-		t_philo *p = &config.philos[i];
-		printf("Filósofo %d:\n", p->id);
-		printf("  Meals: %d\n", p->meals);
-		printf("  Left fork:  %p\n", (void *)p->left_fork);
-		printf("  Right fork: %p\n", (void *)p->right_fork);
-		printf("  Config ptr: %p\n", (void *)p->config);
-		printf("\n");
-		i++;
-	}
+	if (!start_simulation(&config))
+		return (printf("❌ Error al lanzar hilos\n"), 1);
+	if (!wait_for_threads(&config))
+		return (printf("❌ Error al esperar hilos\n"), 1);
 	return (0);
 }

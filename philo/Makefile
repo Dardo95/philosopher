@@ -8,7 +8,8 @@ SRC :=	src/args.c \
 		src/init.c \
 		src/monitor.c \
 		src/philo.c \
-		src/utils.c
+		src/philo_threads.c \
+		src/utils.c \
 		#src/time_utils.c \
 		#src/actions.c \
 
