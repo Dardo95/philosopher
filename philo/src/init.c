@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 19:16:17 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/06 12:51:39 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/07 15:25:47 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	init_config(t_config *config)
 		return (0);
 	if (pthread_mutex_init(&config->write_lock, NULL) != 0)
 		return (0);
+	config->first_timestamp = get_now_ms();
 	return (1);
 }
 
