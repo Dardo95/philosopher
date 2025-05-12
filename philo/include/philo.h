@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:38:32 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/07 15:01:49 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/12 21:16:22 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ typedef struct s_config
 	int				time_eat;
 	int				time_sleep;
 	int				must_eat;
+	int				philos_full;
+	pthread_mutex_t	full_mutex;
+	int				stop;
+	pthread_mutex_t	stop_mutex;
 	long			first_timestamp;
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	*forks;
@@ -41,22 +45,27 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	t_config		*config;
+	pthread_mutex_t last_meal_mutex;
+	t_config		*cfg;
 }					t_philo;
 
 int					is_str_digit(char *s);
 int					safe_atoi(const char *str, int *values);
 int					convert_args(char **argv, int argc, int *values);
-int					parse_args(int argc, char **argv, t_config *config);
-int					init_config(t_config *config);
-int					init_philosophers(t_config *config);
+int					parse_args(int argc, char **argv, t_config *cfg);
+int					init_config(t_config *cfg);
+int					init_philosophers(t_config *cfg);
 void				*routine(void *arg);
-int					start_simulation(t_config *config);
-int					wait_for_threads(t_config *config);
+void				*death_checker(void *arg);
+int					check_philo_death(t_philo *philo);
+int					start_simulation(t_config *cfg);
+int					simulation_stopped(t_config *cfg);
+int					wait_for_threads(t_config *cfg);
+void				take_forks(t_philo *philo);
 void				philo_eat(t_philo *philo);
 void				philo_sleep(t_philo *philo);
 void				philo_think(t_philo *philo);
 long				get_now_ms(void);
-long				get_timestamp_ms(t_config *config);
+long				get_timestamp_ms(t_config *cfg);
 
 #endif

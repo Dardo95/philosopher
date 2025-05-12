@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:15:16 by enogueir          #+#    #+#             */
-/*   Updated: 2025/04/25 15:52:11 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:03:41 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	convert_args(char **argv, int argc, int *values)
 	return (1);
 }
 
-int	parse_args(int argc, char **argv, t_config *config)
+int	parse_args(int argc, char **argv, t_config *cfg)
 {
 	int	values[5];
 
@@ -77,12 +77,12 @@ int	parse_args(int argc, char **argv, t_config *config)
 		return (0);
 	if (!convert_args(argv, argc, values))
 		return (0);
-	config->n_philos = values[0];
-	config->time_die = values[1];
-	config->time_eat = values[2];
-	config->time_sleep = values[3];
-	config->must_eat = -1;
+	cfg->n_philos = values[0];
+	cfg->time_die = values[1];
+	cfg->time_eat = values[2];
+	cfg->time_sleep = values[3];
+	cfg->must_eat = -1;
 	if (argc == 6)
-		config->must_eat = values[4];
+		cfg->must_eat = values[4];
 	return (1);
 }

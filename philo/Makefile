@@ -6,7 +6,7 @@ IFLAGS := -Iincludes
 
 SRC :=	src/args.c \
 		src/init.c \
-		src/monitor.c \
+		src/philo_monitor.c \
 		src/philo.c \
 		src/philo_threads.c \
 		src/philo_actions.c \

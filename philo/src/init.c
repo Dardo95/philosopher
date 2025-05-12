@@ -3,42 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 19:16:17 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/07 15:25:47 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/12 21:19:13 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	init_config(t_config *config)
+int	init_config(t_config *cfg)
 {
-	config->forks = malloc(config->n_philos * sizeof(pthread_mutex_t));
-	if (!config->forks)
+	cfg->philos_full = 0;
+	pthread_mutex_init(&cfg->full_mutex, NULL);
+	cfg->stop = 0;
+	cfg->forks = malloc(cfg->n_philos * sizeof(pthread_mutex_t));
+	if (!cfg->forks)
 		return (0);
-	config->philos = malloc(config->n_philos * sizeof(t_philo));
-	if (!config->philos)
+	cfg->philos = malloc(cfg->n_philos * sizeof(t_philo));
+	if (!cfg->philos)
 		return (0);
-	if (pthread_mutex_init(&config->write_lock, NULL) != 0)
+	if (pthread_mutex_init(&cfg->write_lock, NULL) != 0)
 		return (0);
-	config->first_timestamp = get_now_ms();
+	if (pthread_mutex_init(&cfg->stop_mutex, NULL) != 0)
+		return (0);
+	cfg->first_timestamp = get_now_ms();
 	return (1);
 }
 
-int	init_philosophers(t_config *config)
+int	init_philosophers(t_config *cfg)
 {
 	int	i;
 
 	i = 0;
-	while (i < config->n_philos)
+	while (i < cfg->n_philos)
 	{
-		config->philos[i].id = i + 1;
-		config->philos[i].meals = 0;
-		config->philos[i].last_meal = 0;
-		config->philos[i].config = config;
-		config->philos[i].left_fork = &config->forks[i];
-		config->philos[i].right_fork = &config->forks[(i + 1) % config->n_philos];
+		cfg->philos[i].id = i + 1;
+		cfg->philos[i].meals = 0;
+		cfg->philos[i].last_meal = 0;
+		cfg->philos[i].cfg = cfg;
+		cfg->philos[i].left_fork = &cfg->forks[i];
+		cfg->philos[i].right_fork = &cfg->forks[(i + 1) % cfg->n_philos];
+		pthread_mutex_init(&cfg->philos[i].last_meal_mutex, NULL);
 		i++;
 	}
 	return (1);

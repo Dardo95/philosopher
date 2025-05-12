@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_threads.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:11:09 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/07 15:30:47 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:03:41 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,38 +19,41 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		usleep(200);
-	while(1)
+	while(!simulation_stopped(philo->cfg))
 	{
-		philo_eat(philo);
-		philo_sleep(philo);
-		philo_think(philo);
+		if (!simulation_stopped(philo->cfg))
+			philo_eat(philo);
+		if (!simulation_stopped(philo->cfg))
+			philo_sleep(philo);
+		if (!simulation_stopped(philo->cfg))
+			philo_think(philo);
 	}
 	return (NULL);
 }
 
-int	start_simulation(t_config *config)
+int	start_simulation(t_config *cfg)
 {
 	int	i;
 
 	i = 0;
-	while (i < config->n_philos)
+	while (i < cfg->n_philos)
 	{
-		if (pthread_create(&config->philos[i].thread, NULL, routine,
-				&config->philos[i]) != 0)
+		if (pthread_create(&cfg->philos[i].thread, NULL, routine,
+				&cfg->philos[i]) != 0)
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-int	wait_for_threads(t_config *config)
+int	wait_for_threads(t_config *cfg)
 {
 	int	i;
 
 	i = 0;
-	while (i < config->n_philos)
+	while (i < cfg->n_philos)
 	{
-		if (pthread_join(config->philos[i].thread, NULL) != 0)
+		if (pthread_join(cfg->philos[i].thread, NULL) != 0)
 			return (0);
 		i++;
 	}
