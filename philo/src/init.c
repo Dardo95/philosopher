@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 19:16:17 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/12 21:19:13 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:24:04 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,20 @@
 
 int	init_config(t_config *cfg)
 {
+	int	i;
 	cfg->philos_full = 0;
 	pthread_mutex_init(&cfg->full_mutex, NULL);
 	cfg->stop = 0;
 	cfg->forks = malloc(cfg->n_philos * sizeof(pthread_mutex_t));
 	if (!cfg->forks)
 		return (0);
+	i = 0;
+	while (i < cfg->n_philos)
+	{
+		if (pthread_mutex_init(&cfg->forks[i], NULL) != 0)
+			return (0);
+		i++;
+	}
 	cfg->philos = malloc(cfg->n_philos * sizeof(t_philo));
 	if (!cfg->philos)
 		return (0);
@@ -40,11 +48,12 @@ int	init_philosophers(t_config *cfg)
 	{
 		cfg->philos[i].id = i + 1;
 		cfg->philos[i].meals = 0;
-		cfg->philos[i].last_meal = 0;
+		cfg->philos[i].last_meal = cfg->first_timestamp;
 		cfg->philos[i].cfg = cfg;
 		cfg->philos[i].left_fork = &cfg->forks[i];
 		cfg->philos[i].right_fork = &cfg->forks[(i + 1) % cfg->n_philos];
-		pthread_mutex_init(&cfg->philos[i].last_meal_mutex, NULL);
+		if (pthread_mutex_init(&cfg->philos[i].last_meal_mutex, NULL) != 0)
+			return (0);
 		i++;
 	}
 	return (1);

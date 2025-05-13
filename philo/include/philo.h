@@ -6,12 +6,12 @@
 /*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:38:32 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/12 21:16:22 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:13:33 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#ifndef PHILO_H
+# define PHILO_H
 
 # include <limits.h>
 # include <pthread.h>
