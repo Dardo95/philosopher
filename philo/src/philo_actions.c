@@ -3,53 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   philo_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:13:01 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/12 21:46:33 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:41:34 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static void	check_full(t_philo *philo)
+static void	release_forks(t_philo *philo)
 {
-	if (philo->cfg->must_eat > 0 && philo->meals == philo->cfg->must_eat)
-	{
-		pthread_mutex_lock(&philo->cfg->full_mutex);
-		philo->cfg->philos_full++;
-		pthread_mutex_unlock(&philo->cfg->full_mutex);
-	}
+	
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	
 }
 
 void	take_forks(t_philo *philo)
 {
-	pthread_mutex_t	*first_fork;
-	pthread_mutex_t	*second_fork;
-
 	if (philo->id % 2 == 0)
 	{
-		first_fork = philo->right_fork;
-		second_fork = philo->left_fork;
+		philo->first = philo->right_fork;
+		philo->second = philo->left_fork;
 	}
 	else
 	{
-		first_fork = philo->left_fork;
-		second_fork = philo->right_fork;
+		philo->first = philo->left_fork;
+		philo->second = philo->right_fork;
 	}
-	pthread_mutex_lock(first_fork);
+	pthread_mutex_lock(philo->first);
 	pthread_mutex_lock(&philo->cfg->write_lock);
-	printf("%ld %d has taken a fork\n", get_timestamp_ms(philo->cfg),
-		philo->id);
+	printf("%ld %d has taken a fork\n", get_timestamp_ms(philo->cfg), philo->id);
 	pthread_mutex_unlock(&philo->cfg->write_lock);
+
 	if (simulation_stopped(philo->cfg))
-		return (pthread_mutex_unlock(first_fork), (void)0);
-	pthread_mutex_lock(second_fork);
+		return ((void)pthread_mutex_unlock(philo->first));
+
+	pthread_mutex_lock(philo->second);
 	pthread_mutex_lock(&philo->cfg->write_lock);
-	printf("%ld %d has taken a fork\n", get_timestamp_ms(philo->cfg),
-		philo->id);
+	printf("%ld %d has taken a fork\n", get_timestamp_ms(philo->cfg), philo->id);
 	pthread_mutex_unlock(&philo->cfg->write_lock);
 }
+
 
 void	philo_eat(t_philo *philo)
 {
@@ -71,8 +67,7 @@ void	philo_eat(t_philo *philo)
 	philo->meals++;
 	check_full(philo);
 	usleep(philo->cfg->time_eat * 1000);
-	pthread_mutex_unlock(philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
+	release_forks(philo);
 }
 
 void	philo_sleep(t_philo *philo)

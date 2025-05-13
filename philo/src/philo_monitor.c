@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   philo_monitor.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:52:34 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/12 21:39:40 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:24:13 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
 
 int	check_philo_death(t_philo *philo)
 {
@@ -33,9 +32,10 @@ int	check_philo_death(t_philo *philo)
 
 void	*death_checker(void *arg)
 {
-	t_config 	*cfg = (t_config *)arg;
+	t_config	*cfg;
 	int			i;
 
+	cfg = (t_config *)arg;
 	while (!simulation_stopped(cfg))
 	{
 		i = 0;
@@ -45,13 +45,35 @@ void	*death_checker(void *arg)
 				return (NULL);
 			i++;
 		}
+		usleep(1000);
+	}
+	return (NULL);
+}
+
+void	check_full(t_philo *philo)
+{
+	if (philo->cfg->must_eat > 0 && philo->meals == philo->cfg->must_eat)
+	{
+		pthread_mutex_lock(&philo->cfg->full_mutex);
+		philo->cfg->philos_full++;
+		pthread_mutex_unlock(&philo->cfg->full_mutex);
+	}
+}
+
+void	*meals_complete(void *arg)
+{
+	t_config	*cfg;
+
+	cfg = (t_config *)arg;
+	while (!simulation_stopped(cfg))
+	{
 		pthread_mutex_lock(&cfg->full_mutex);
 		if (cfg->must_eat > 0 && cfg->philos_full == cfg->n_philos)
 		{
+			pthread_mutex_unlock(&cfg->full_mutex);
 			pthread_mutex_lock(&cfg->stop_mutex);
 			cfg->stop = 1;
 			pthread_mutex_unlock(&cfg->stop_mutex);
-			pthread_mutex_unlock(&cfg->full_mutex);
 			return (NULL);
 		}
 		pthread_mutex_unlock(&cfg->full_mutex);
@@ -59,3 +81,4 @@ void	*death_checker(void *arg)
 	}
 	return (NULL);
 }
+

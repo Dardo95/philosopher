@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:38:32 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/13 14:13:33 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:40:19 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t last_meal_mutex;
 	t_config		*cfg;
+	pthread_mutex_t	*first;
+	pthread_mutex_t	*second;
 }					t_philo;
 
 int					is_str_digit(char *s);
@@ -67,5 +69,7 @@ void				philo_sleep(t_philo *philo);
 void				philo_think(t_philo *philo);
 long				get_now_ms(void);
 long				get_timestamp_ms(t_config *cfg);
+void				*meals_complete(void *arg);
+void				check_full(t_philo *philo);
 
 #endif

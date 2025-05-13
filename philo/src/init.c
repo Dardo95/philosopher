@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 19:16:17 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/13 14:24:04 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:32:10 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	init_philosophers(t_config *cfg)
 	{
 		cfg->philos[i].id = i + 1;
 		cfg->philos[i].meals = 0;
-		cfg->philos[i].last_meal = cfg->first_timestamp;
+		cfg->philos[i].last_meal = get_now_ms();
 		cfg->philos[i].cfg = cfg;
 		cfg->philos[i].left_fork = &cfg->forks[i];
 		cfg->philos[i].right_fork = &cfg->forks[(i + 1) % cfg->n_philos];

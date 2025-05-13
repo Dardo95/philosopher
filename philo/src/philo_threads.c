@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_threads.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:11:09 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/12 17:03:41 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:44:26 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,12 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
-		usleep(200);
-	while(!simulation_stopped(philo->cfg))
+		usleep(40);
+	while (!simulation_stopped(philo->cfg))
 	{
-		if (!simulation_stopped(philo->cfg))
-			philo_eat(philo);
-		if (!simulation_stopped(philo->cfg))
-			philo_sleep(philo);
-		if (!simulation_stopped(philo->cfg))
-			philo_think(philo);
+		philo_eat(philo);
+		philo_sleep(philo);
+		philo_think(philo);
 	}
 	return (NULL);
 }
