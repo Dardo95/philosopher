@@ -7,12 +7,10 @@ IFLAGS := -Iincludes
 SRC :=	src/args.c \
 		src/init.c \
 		src/philo_monitor.c \
-		src/philo.c \
 		src/philo_threads.c \
 		src/philo_actions.c \
 		src/philo_utils.c \
-		#src/time_utils.c \
-		#src/actions.c \
+		src/main.c \
 
 BUILD_DIR := build
 OBJ := $(SRC:.c=.o)
@@ -25,30 +23,20 @@ YELLOW := \033[33m
 CYAN := \033[36m
 RESET := \033[0m
 
-.DEFAULT_GOAL := all
+-include $(DEP)
 
 all: $(NAME)
-	@printf "$(GREEN)\n✅ Compilación completa$(RESET)\n"
 
 $(NAME): $(OBJ)
 	@printf "$(CYAN)\r🔗 Enlazando: $(NAME)                     $(RESET)\n"
 	@$(CC) $(OBJ) -o $(NAME) $(CFLAGS)
+	@printf "$(GREEN)\n✅ Compilación completa$(RESET)\n"
 
 $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	@printf "$(BLUE)\r⚙️  Compilando: $<                         $(RESET)"
 	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
 
-run: $(NAME)
-	@./$(NAME) $(ARGS)
-
-debug: CFLAGS += -g3 -fsanitize=address -fsanitize=thread
-debug: re
-	@printf "$(CYAN)\n🚀 Ejecutando en modo DEBUG...$(RESET)\n"
-	@./$(NAME) $(ARGS)
-
-valgrind: $(NAME)
-	@valgrind --leak-check=full --track-origins=yes ./$(NAME) $(ARGS)
 
 clean:
 	@printf "$(YELLOW)\r🧹 Limpiando objetos...                $(RESET)\n"
@@ -66,6 +54,6 @@ norm:
 	@norminette includes
 	@norminette $(SRC)
 
--include $(DEP)
 
-.PHONY: all clean fclean re norm run debug valgrind
+.PHONY: all clean fclean re norm
+.DEFAULT_GOAL := all

@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:38:32 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/13 18:40:19 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:22:18 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	pthread_mutex_t last_meal_mutex;
+	pthread_mutex_t	last_meal_mutex;
 	t_config		*cfg;
 	pthread_mutex_t	*first;
 	pthread_mutex_t	*second;
@@ -71,5 +71,7 @@ long				get_now_ms(void);
 long				get_timestamp_ms(t_config *cfg);
 void				*meals_complete(void *arg);
 void				check_full(t_philo *philo);
+void				print_status(t_philo *philo, const char *msg);
+void				safe_usleep(long time_ms);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:52:34 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/13 16:24:13 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:20:31 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,19 @@
 
 int	check_philo_death(t_philo *philo)
 {
+	time_t	now;
+
 	pthread_mutex_lock(&philo->last_meal_mutex);
-	if (get_timestamp_ms(philo->cfg) - philo->last_meal >= philo->cfg->time_die)
+	now = get_timestamp_ms(philo->cfg);
+	if (now - philo->last_meal >= philo->cfg->time_die)
 	{
+		pthread_mutex_unlock(&philo->last_meal_mutex);
 		pthread_mutex_lock(&philo->cfg->write_lock);
-		printf("%ld %d died\n", get_timestamp_ms(philo->cfg), philo->id);
+		printf("%ld %d died\n", now, philo->id);
 		pthread_mutex_unlock(&philo->cfg->write_lock);
 		pthread_mutex_lock(&philo->cfg->stop_mutex);
 		philo->cfg->stop = 1;
 		pthread_mutex_unlock(&philo->cfg->stop_mutex);
-		pthread_mutex_unlock(&philo->last_meal_mutex);
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->last_meal_mutex);
@@ -81,4 +84,3 @@ void	*meals_complete(void *arg)
 	}
 	return (NULL);
 }
-

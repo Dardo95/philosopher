@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:24:30 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/12 17:03:41 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:19:16 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 long	get_now_ms(void)
 {
-	struct timeval tv;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-	
 }
 
 long	get_timestamp_ms(t_config *cfg)
@@ -26,12 +25,23 @@ long	get_timestamp_ms(t_config *cfg)
 	return (get_now_ms() - cfg->first_timestamp);
 }
 
-int	simulation_stopped(t_config *cfg)
+void	safe_usleep(long time_ms)
 {
-	int	stopped;
+	long	start;
 
-	pthread_mutex_lock(&cfg->stop_mutex);
-	stopped = cfg->stop;
-	pthread_mutex_unlock(&cfg->stop_mutex);
-	return (stopped);
+	start = get_now_ms();
+	while ((get_now_ms() - start) < time_ms)
+		usleep(100);
+}
+
+void	print_status(t_philo *philo, const char *msg)
+{
+	t_config	*cfg;
+
+	cfg = philo->cfg;
+	pthread_mutex_lock(&cfg->write_lock);
+	if (!simulation_stopped(cfg))
+		printf("%ld %d %s\n",
+			get_timestamp_ms(cfg), philo->id, msg);
+	pthread_mutex_unlock(&cfg->write_lock);
 }
