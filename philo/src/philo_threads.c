@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:11:09 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/22 19:05:24 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:54:16 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ void	*routine(void *arg)
 		pthread_mutex_unlock(philo->left_fork);
 		return (NULL);
 	}
-	if (philo->id % 2 == 0)
-		usleep(philo->cfg->time_eat * 1000 / 2);
+	/* if (philo->id % 2 == 0)
+		safe_usleep(philo->cfg->time_eat / 2);
 	else
-		usleep(philo->cfg->time_eat * 1000 / 3);
+		safe_usleep(philo->cfg->time_eat / 3); */
 	while (!simulation_stopped(philo->cfg))
 	{
+		if (philo->id % 2 != 0)
+			safe_usleep(45);
 		philo_eat(philo);
 		philo_sleep(philo);
 		philo_think(philo);

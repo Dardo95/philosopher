@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:52:34 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/22 18:20:31 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:52:53 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	*death_checker(void *arg)
 				return (NULL);
 			i++;
 		}
-		usleep(1000);
+		safe_usleep(1);
 	}
 	return (NULL);
 }

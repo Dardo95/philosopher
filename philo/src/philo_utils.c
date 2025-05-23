@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:24:30 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/22 19:19:16 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:51:36 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	safe_usleep(long time_ms)
 
 	start = get_now_ms();
 	while ((get_now_ms() - start) < time_ms)
-		usleep(100);
+		usleep(3);
 }
 
 void	print_status(t_philo *philo, const char *msg)

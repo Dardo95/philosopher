@@ -1,7 +1,7 @@
 NAME := philo
 
 CC = cc
-CFLAGS := -Wall -Werror -Wextra -g -pthread -MMD -MP -fsanitize=thread
+CFLAGS := -Wall -Werror -Wextra -g -pthread -MMD -MP -fsanitize=address
 IFLAGS := -Iincludes
 
 SRC :=	src/args.c \

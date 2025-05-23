@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:38:32 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/22 19:22:18 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:17:54 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ void				*meals_complete(void *arg);
 void				check_full(t_philo *philo);
 void				print_status(t_philo *philo, const char *msg);
 void				safe_usleep(long time_ms);
+void				free_and_destroy(t_config	cfg);
 
 #endif
