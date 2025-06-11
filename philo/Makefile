@@ -1,16 +1,17 @@
 NAME := philo
 
 CC = cc
-CFLAGS := -Wall -Werror -Wextra -g -pthread -MMD -MP -fsanitize=address
+CFLAGS := -Wall -Werror -Wextra -pthread -MMD -MP -g3
 IFLAGS := -Iincludes
 
 SRC :=	src/args.c \
 		src/init.c \
-		src/philo_monitor.c \
-		src/philo_threads.c \
-		src/philo_actions.c \
-		src/philo_utils.c \
 		src/main.c \
+		src/monitor.c \
+		src/philo_actions.c \
+		src/philo_threads.c \
+		src/philo_utils.c \
+		src/simulation.c \
 
 BUILD_DIR := build
 OBJ := $(SRC:.c=.o)

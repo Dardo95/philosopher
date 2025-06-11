@@ -6,32 +6,29 @@
 /*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:24:30 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/23 17:51:36 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:25:17 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-long	get_now_ms(void)
+unsigned long	get_now_ms(void)
 {
 	struct timeval	tv;
+	unsigned long	current_time;
 
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	if (gettimeofday(&tv, NULL) != 0)
+		return (0);
+	current_time = ((tv.tv_sec * 1000 + (tv.tv_usec / 1000)));
+	return (current_time);
 }
 
-long	get_timestamp_ms(t_config *cfg)
+unsigned long	get_timestamp_ms(t_config *cfg)
 {
-	return (get_now_ms() - cfg->first_timestamp);
-}
+	unsigned long	timestamp;
 
-void	safe_usleep(long time_ms)
-{
-	long	start;
-
-	start = get_now_ms();
-	while ((get_now_ms() - start) < time_ms)
-		usleep(3);
+	timestamp = get_now_ms() - cfg->first_timestamp;
+	return (timestamp);
 }
 
 void	print_status(t_philo *philo, const char *msg)
@@ -39,9 +36,11 @@ void	print_status(t_philo *philo, const char *msg)
 	t_config	*cfg;
 
 	cfg = philo->cfg;
+
+	if (!run_simulation(cfg))
+		return ;
 	pthread_mutex_lock(&cfg->write_lock);
-	if (!simulation_stopped(cfg))
-		printf("%ld %d %s\n",
-			get_timestamp_ms(cfg), philo->id, msg);
+	printf("%lu %d %s\n",
+		get_timestamp_ms(cfg), philo->id, msg);
 	pthread_mutex_unlock(&cfg->write_lock);
 }
