@@ -6,13 +6,13 @@
 /*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:14:59 by enogueir          #+#    #+#             */
-/*   Updated: 2025/06/11 20:31:17 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:24:54 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void free_and_destroy(t_config	*cfg)
+void	free_and_destroy(t_config	*cfg)
 {
 	int	i;
 
@@ -32,7 +32,7 @@ void free_and_destroy(t_config	*cfg)
 int	main(int argc, char **argv)
 {
 	t_config	cfg;
-	pthread_t checker;
+	pthread_t	checker;
 
 	memset(&cfg, 0, sizeof (t_config));
 	if (!parse_args(argc, argv, &cfg))
@@ -49,7 +49,6 @@ int	main(int argc, char **argv)
 	}
 	if (!start_simulation(&cfg, &checker))
 		return (EXIT_FAILURE);
-
 	wait_for_threads(&cfg, checker);
 	free_and_destroy(&cfg);
 	return (EXIT_SUCCESS);

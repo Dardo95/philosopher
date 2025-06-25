@@ -6,7 +6,7 @@
 /*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:15:16 by enogueir          #+#    #+#             */
-/*   Updated: 2025/06/11 20:29:38 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:23:56 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	safe_atoi(const char *str, int *values)
 
 	i = 0;
 	result = 0;
-	if (str[0] == '+') 
+	if (str[0] == '+')
 		i = 1;
 	while (str[i])
 	{
@@ -28,7 +28,6 @@ int	safe_atoi(const char *str, int *values)
 			return (FALSE);
 		i++;
 	}
-
 	*values = (int)result;
 	return (TRUE);
 }

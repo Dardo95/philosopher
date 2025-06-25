@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogueir <enogueir@student.42madrid>       +#+  +:+       +#+        */
+/*   By: enogueir <enogueir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:13:01 by enogueir          #+#    #+#             */
-/*   Updated: 2025/05/27 13:28:37 by enogueir         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:25:48 by enogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	take_forks(t_philo *philo)
 void	philo_eat(t_philo *philo)
 {
 	take_forks(philo);
-
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	philo->last_meal = get_now_ms();
 	philo->meals++;
